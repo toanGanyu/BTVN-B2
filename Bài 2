@@ -1,0 +1,76 @@
+namespace BTVN_B2_Bi2
+{
+    internal class Program
+    {
+        static double[,] Diem; 
+
+        static void NhapDiem(int soMonHoc, int soLuongDiem)
+        {
+            Diem = new double[soMonHoc, soLuongDiem];
+
+            for (int i = 0; i < soMonHoc; i++)
+            {
+                Console.WriteLine($"Nhap diem cho mon hoc {i + 1}:");
+                for (int j = 0; j < soLuongDiem; j++)
+                {
+                    Console.Write($"Diem thu {j + 1}: ");
+                    Diem[i, j] = double.Parse(Console.ReadLine());
+                }
+            }
+        }
+
+        static double TinhDiemTrungBinh(int monHocIndex)
+        {
+            double tong = 0;
+            for (int j = 0; j < Diem.GetLength(1); j++)
+            {
+                tong += Diem[monHocIndex, j];
+            }
+            return tong / Diem.GetLength(1);
+        }
+
+        static double TimDiemCaoNhat(int monHocIndex)
+        {
+            double max = Diem[monHocIndex, 0];
+            for (int j = 0; j < Diem.GetLength(1); j++)
+            {
+                if (Diem[monHocIndex, j] > max)
+                    max = Diem[monHocIndex, j];
+            }
+            return max;
+        }
+
+        static double TimDiemThapNhat(int monHocIndex)
+        {
+            double min = Diem[monHocIndex, 0];
+            for (int j = 0; j < Diem.GetLength(1); j++)
+            {
+                if (Diem[monHocIndex, j] < min)
+                    min = Diem[monHocIndex, j];
+            }
+            return min;
+        }
+
+        static void Main()
+        {
+            Console.Write("Nhap so mon hoc ");
+            int soMonHoc = int.Parse(Console.ReadLine());
+
+            Console.Write("So luong cot diem ");
+            int soLuongDiem = int.Parse(Console.ReadLine());
+
+            NhapDiem(soMonHoc, soLuongDiem);
+
+            for (int i = 0; i < soMonHoc; i++)
+            {
+                Console.WriteLine($"\nKet qua mon hoc thu {i + 1}:");
+                Console.WriteLine($"  Diem trung binh: {TinhDiemTrungBinh(i)}");
+                Console.WriteLine($"  Diem cao nhat: {TimDiemCaoNhat(i)}");
+                Console.WriteLine($"  Diem thap nhat: {TimDiemThapNhat(i)}");
+            }
+        }
+
+
+
+    }
+}
