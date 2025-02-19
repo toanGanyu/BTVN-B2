@@ -1,0 +1,142 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+
+public class Timing
+{
+    TimeSpan startingTime;
+    TimeSpan duration;
+    public Timing()
+    {
+        startingTime = new TimeSpan(0);
+        duration = new TimeSpan(0);
+    }
+    public void StopTime()
+    {
+        duration = Process.GetCurrentProcess().Threads[0].UserProcessorTime.Subtract(startingTime);
+    }
+    public void StartTime()
+    {
+        GC.Collect();
+        GC.WaitForPendingFinalizers();
+        startingTime = Process.GetCurrentProcess().Threads[0].UserProcessorTime;
+    }
+    public TimeSpan Result()
+    {
+        return duration;
+    }
+}
+
+class Program
+{
+    static void Bai1()
+    {
+        Timing timing = new Timing();
+        timing.StartTime();
+
+        List<double> Diem = new List<double>();
+        Console.WriteLine("Nhap diem (nhap -1 de ket thuc):");
+        while (true)
+        {
+            double diem;
+            if (double.TryParse(Console.ReadLine(), out diem))
+            {
+                if (diem == -1) break;
+                Diem.Add(diem);
+            }
+            else
+            {
+                Console.WriteLine("Vui long nhap so hop le!");
+            }
+        }
+
+        double trungBinh = Diem.Count == 0 ? 0 : Diem.Average();
+        double caoNhat = Diem.Count == 0 ? double.MinValue : Diem.Max();
+        double thapNhat = Diem.Count == 0 ? double.MaxValue : Diem.Min();
+
+        timing.StopTime();
+        
+        Console.WriteLine($"Diem trung binh: {trungBinh}");
+        Console.WriteLine($"Diem cao nhat: {caoNhat}");
+        Console.WriteLine($"Diem thap nhat: {thapNhat}");
+        Console.WriteLine($"Thoi gian thuc thi Bai 1: {timing.Result().TotalMilliseconds} ms");
+    }
+
+    static void Bai3()
+    {
+        Timing timing = new Timing();
+        timing.StartTime();
+
+        List<double> Diem = new List<double>();
+        Console.WriteLine("Nhap so luong diem:");
+        int soLuong = int.Parse(Console.ReadLine());
+
+        for (int i = 0; i < soLuong; i++)
+        {
+            Diem.Add(double.Parse(Console.ReadLine()));
+        }
+
+        double trungBinh = Diem.Average();
+        double caoNhat = Diem.Max();
+        double thapNhat = Diem.Min();
+
+        timing.StopTime();
+
+        Console.WriteLine($"Diem trung binh: {trungBinh}");
+        Console.WriteLine($"Diem cao nhat: {caoNhat}");
+        Console.WriteLine($"Diem thap nhat: {thapNhat}");
+        Console.WriteLine($"Thoi gian thuc thi Bai 3: {timing.Result().TotalMilliseconds} ms");
+    }
+
+    static void Bai4()
+    {
+        Timing timing = new Timing();
+        timing.StartTime();
+
+        ArrayList Diem = new ArrayList();
+        Console.WriteLine("Nhap so luong diem:");
+        int soLuong = int.Parse(Console.ReadLine());
+
+        for (int i = 0; i < soLuong; i++)
+        {
+            Diem.Add(double.Parse(Console.ReadLine()));
+        }
+
+        double trungBinh = 0;
+        foreach (double diem in Diem)
+        {
+            trungBinh += (double)diem;
+        }
+        trungBinh /= Diem.Count;
+
+        double caoNhat = (double)Diem[0];
+        double thapNhat = (double)Diem[0];
+
+        foreach (double diem in Diem)
+        {
+            if (diem > caoNhat) caoNhat = diem;
+            if (diem < thapNhat) thapNhat = diem;
+        }
+
+        timing.StopTime();
+
+        Console.WriteLine($"Diem trung binh: {trungBinh}");
+        Console.WriteLine($"Diem cao nhat: {caoNhat}");
+        Console.WriteLine($"Diem thap nhat: {thapNhat}");
+        Console.WriteLine($"Thoi gian thuc thi Bai 4: {timing.Result().TotalMilliseconds} ms");
+    }
+
+    static void Main()
+    {
+        Console.WriteLine("Chay Bai 1:");
+        Bai1();
+
+        Console.WriteLine("\nChay Bai 3:");
+        Bai3();
+
+        Console.WriteLine("\nChay Bai 4:");
+        Bai4();
+    }
+}
