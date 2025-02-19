@@ -1,0 +1,69 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace BTVN_B2
+{
+    internal class Program
+    {
+        static List<double> Diem = new List<double>();
+
+        static void NhapDiem()
+        {
+            Console.WriteLine("Nhap diem (nhap -1 de ket thuc):");
+            while (true)
+            {
+                double diem;
+                if (double.TryParse(Console.ReadLine(), out diem))
+                {
+                    if (diem == -1) break; // Nhap -1 de dung
+                    Diem.Add(diem);
+                }
+                else
+                {
+                    Console.WriteLine("Vui long nhap so hop le!");
+                }
+            }
+        }
+
+        static double TinhDiemTrungBinh()
+        {
+            if (Diem.Count == 0) return 0; // Tranh chia cho 0
+
+            double tong = 0;
+            foreach (double diem in Diem)
+            {
+                tong += diem;
+            }
+            return tong / Diem.Count;
+        }
+
+        static double TimDiemCaoNhat()
+        {
+            if (Diem.Count == 0) return double.MinValue; // Tranh loi khi khong co du lieu
+            return Diem.Max();
+        }
+
+        static double TimDiemThapNhat()
+        {
+            if (Diem.Count == 0) return double.MaxValue;
+            return Diem.Min();
+        }
+
+        static void Main()
+        {
+            NhapDiem();
+
+            if (Diem.Count == 0)
+            {
+                Console.WriteLine("Khong co diem nao de tinh toan.");
+            }
+            else
+            {
+                Console.WriteLine($"Diem trung binh: {TinhDiemTrungBinh()}");
+                Console.WriteLine($"Diem cao nhat: {TimDiemCaoNhat()}");
+                Console.WriteLine($"Diem thap nhat: {TimDiemThapNhat()}");
+            }
+        }
+    }
+}
