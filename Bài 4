@@ -1,0 +1,61 @@
+using System.Collections;
+
+namespace CSDL_B2Bi3
+{
+    internal class Program
+    {
+        static ArrayList Diem = new ArrayList();
+
+        static void NhapDiem()
+        {
+            Console.Write("Nhap so luong diem: ");
+            int soLuong = int.Parse(Console.ReadLine());
+
+            for (int i = 0; i < soLuong; i++)
+            {
+                Diem.Add(double.Parse(Console.ReadLine()));
+            }
+        }
+
+        static double TinhDiemTrungBinh()
+        {
+            double tong = 0;
+            foreach (double diem in Diem)
+            {
+                tong += (double)diem; 
+            }
+            return tong / Diem.Count;
+        }
+
+        static double TimDiemCaoNhat()
+        {
+            double max = (double)Diem[0];
+            foreach (double diem in Diem)
+            {
+                if (diem > max)
+                    max = diem;
+            }
+            return max;
+        }
+
+        static double TimDiemThapNhat()
+        {
+            double min = (double)Diem[0];
+            foreach (double diem in Diem)
+            {
+                if (diem < min)
+                    min = diem;
+            }
+            return min;
+        }
+
+        static void Main()
+        {
+            NhapDiem();
+
+            Console.WriteLine($"Diem trung binh: {TinhDiemTrungBinh()}");
+            Console.WriteLine($"Diem cao nhat: {TimDiemCaoNhat()}");
+            Console.WriteLine($"Diem thap nhat: {TimDiemThapNhat()}");
+        }
+    }
+}
